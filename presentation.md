@@ -166,7 +166,7 @@ Stream = sequence of elements on which one or more operations can be performed
 
 Pure = does not change the elements of the list but returns a new instance
 
-Either **terminal** (returns Stream) or **intermediate** (returns result)
+Either **terminal** (returns a result) or **intermediate** (returns a Stream)
 
 ```java
 persons.stream()
@@ -279,3 +279,10 @@ persons.parallelStream()
   .filter(p -> p.getLastName().startsWith("St") &&
           p -> p.getFirstName().startsWith("Fr"))
 ```
+
+--
+
+### Sources To Read Up
+
+* [http://winterbe.com/posts/2014/03/16/java-8-tutorial/](http://winterbe.com/posts/2014/03/16/java-8-tutorial/)
+* [http://winterbe.com/posts/2014/07/31/java8-stream-tutorial-examples/](http://winterbe.com/posts/2014/07/31/java8-stream-tutorial-examples/)

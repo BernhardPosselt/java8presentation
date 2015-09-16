@@ -626,7 +626,7 @@ persons.forEach(System.out::println);</code></pre>
     <section class="slide-content"><h3 id="streams">Streams</h3>
 <p>Stream = sequence of elements on which one or more operations can be performed</p>
 <p>Pure = does not change the elements of the list but returns a new instance</p>
-<p>Either <strong>terminal</strong> (returns Stream) or <strong>intermediate</strong> (returns result)</p>
+<p>Either <strong>terminal</strong> (returns a result) or <strong>intermediate</strong> (returns a Stream)</p>
 <pre><code class="lang-java">persons.stream()
   .filter(p -&gt; p.getLastName().startsWith(<span class="string">"St"</span>))  <span class="comment">// intermediate</span>
   .forEach(System.out::println);  <span class="comment">// terminal</span>
@@ -722,6 +722,14 @@ System.out.println(<span class="string">"Unique words: "</span> + uniqueWords);
 persons.parallelStream()
   .filter(p -&gt; p.getLastName().startsWith(<span class="string">"St"</span>) &amp;&amp;
           p -&gt; p.getFirstName().startsWith(<span class="string">"Fr"</span>))</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-17">
+    <section class="slide-content"><h3 id="sources-to-read-up">Sources To Read Up</h3>
+<ul>
+<li><a href="http://winterbe.com/posts/2014/03/16/java-8-tutorial/"><a href="http://winterbe.com/posts/2014/03/16/java-8-tutorial/">http://winterbe.com/posts/2014/03/16/java-8-tutorial/</a></a></li>
+<li><a href="http://winterbe.com/posts/2014/07/31/java8-stream-tutorial-examples/"><a href="http://winterbe.com/posts/2014/07/31/java8-stream-tutorial-examples/">http://winterbe.com/posts/2014/07/31/java8-stream-tutorial-examples/</a></a></li>
+</ul>
 </section>
   </div>
 
