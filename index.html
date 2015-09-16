@@ -691,6 +691,24 @@ System.out.println(<span class="string">"Unique words: "</span> + uniqueWords);
 </section>
   </div>
   <div class="slide hidden" id="slide-14">
+    <section class="slide-content"><h3 id="group-by">Group By</h3>
+<p>```java
+List<Person> persons = Arrays.asList(
+  new Person(&quot;Doe&quot;, &quot;John&quot;),
+  new Person(&quot;Stronach&quot;, &quot;Frank&quot;),
+  new Person(&quot;Stark&quot;, &quot;Toni&quot;),
+  new Person(&quot;Stark&quot;, &quot;Abigail&quot;),
+  new Person(&quot;Stronach&quot;, &quot;Abigail&quot;)
+);</p>
+<p>persons.stream()
+  .filter(p -&gt; p.getFirstName().contains(&quot;i&quot;))
+  .collect(Collectors.groupingBy(Person::getLastName))
+  .forEach((lastName, members) -&gt; System.out.println(lastName + &quot; &quot; + members.size()));</p>
+<p>// Stronach 1
+// Stark 2</p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-15">
     <section class="slide-content"><h3 id="parallel-streams">Parallel Streams</h3>
 <p>Very easy to add, roughly 30% faster</p>
 <p>Attention: order not defined with forEach!</p>
@@ -701,7 +719,7 @@ System.out.println(<span class="string">"Unique words: "</span> + uniqueWords);
 <p>Not always printed in order!</p>
 </section>
   </div>
-  <div class="slide hidden" id="slide-15">
+  <div class="slide hidden" id="slide-16">
     <section class="slide-content"><h3 id="parallel-streams-order">Parallel Streams Order</h3>
 <p>You are responsible for handling Thread safety.</p>
 <p>Beware of Side effects! Use pure functions!</p>
@@ -712,7 +730,7 @@ System.out.println(<span class="string">"Unique words: "</span> + uniqueWords);
   .forEachOrdered(System.out::println);</code></pre>
 </section>
   </div>
-  <div class="slide hidden" id="slide-16">
+  <div class="slide hidden" id="slide-17">
     <section class="slide-content"><h3 id="stream-fusion">Stream Fusion</h3>
 <p>Streams automatically use Stream Fusion, meaning the following two operations are the same:</p>
 <pre><code class="lang-java">persons.parallelStream()
@@ -724,7 +742,7 @@ persons.parallelStream()
           p -&gt; p.getFirstName().startsWith(<span class="string">"Fr"</span>))</code></pre>
 </section>
   </div>
-  <div class="slide hidden" id="slide-17">
+  <div class="slide hidden" id="slide-18">
     <section class="slide-content"><h3 id="sources-to-read-up">Sources To Read Up</h3>
 <ul>
 <li><a href="http://winterbe.com/posts/2014/03/16/java-8-tutorial/"><a href="http://winterbe.com/posts/2014/03/16/java-8-tutorial/">http://winterbe.com/posts/2014/03/16/java-8-tutorial/</a></a></li>
