@@ -692,20 +692,21 @@ System.out.println(<span class="string">"Unique words: "</span> + uniqueWords);
   </div>
   <div class="slide hidden" id="slide-14">
     <section class="slide-content"><h3 id="group-by">Group By</h3>
-<p>```java
-List<Person> persons = Arrays.asList(
-  new Person(&quot;Doe&quot;, &quot;John&quot;),
-  new Person(&quot;Stronach&quot;, &quot;Frank&quot;),
-  new Person(&quot;Stark&quot;, &quot;Toni&quot;),
-  new Person(&quot;Stark&quot;, &quot;Abigail&quot;),
-  new Person(&quot;Stronach&quot;, &quot;Abigail&quot;)
-);</p>
-<p>persons.stream()
-  .filter(p -&gt; p.getFirstName().contains(&quot;i&quot;))
+<pre><code class="lang-java">List&lt;Person&gt; persons = Arrays.asList(
+  <span class="keyword">new</span> Person(<span class="string">"Doe"</span>, <span class="string">"John"</span>),
+  <span class="keyword">new</span> Person(<span class="string">"Stronach"</span>, <span class="string">"Frank"</span>),
+  <span class="keyword">new</span> Person(<span class="string">"Stark"</span>, <span class="string">"Toni"</span>),
+  <span class="keyword">new</span> Person(<span class="string">"Stark"</span>, <span class="string">"Abigail"</span>),
+  <span class="keyword">new</span> Person(<span class="string">"Stronach"</span>, <span class="string">"Abigail"</span>)
+);
+
+persons.stream()
+  .filter(p -&gt; p.getFirstName().contains(<span class="string">"i"</span>))
   .collect(Collectors.groupingBy(Person::getLastName))
-  .forEach((lastName, members) -&gt; System.out.println(lastName + &quot; &quot; + members.size()));</p>
-<p>// Stronach 1
-// Stark 2</p>
+  .forEach((lastName, members) -&gt; System.out.println(lastName + <span class="string">" "</span> + members.size()));
+
+<span class="comment">// Stronach 1</span>
+<span class="comment">// Stark 2</span></code></pre>
 </section>
   </div>
   <div class="slide hidden" id="slide-15">
