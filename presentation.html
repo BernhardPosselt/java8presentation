@@ -669,7 +669,10 @@ List&lt;String&gt; uniqueWords = phrases
 
 System.out.println(<span class="string">"Unique words: "</span> + uniqueWords);
 <span class="comment">// Unique words: [confounded, incumbent, jailer, perjury, skimming, sporadic]</span></code></pre>
-<h3 id="stream-terminal-operations">Stream Terminal Operations</h3>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-13">
+    <section class="slide-content"><h3 id="stream-terminal-operations">Stream Terminal Operations</h3>
 <ul>
 <li>collect</li>
 <li>count</li>
@@ -680,7 +683,10 @@ System.out.println(<span class="string">"Unique words: "</span> + uniqueWords);
 <li>min</li>
 <li>reduce</li>
 </ul>
-<h3 id="parallel-streams">Parallel Streams</h3>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-14">
+    <section class="slide-content"><h3 id="parallel-streams">Parallel Streams</h3>
 <p>Very easy to add, roughly 30% faster</p>
 <p>Attention: order not defined with forEach!</p>
 <pre><code class="lang-java">persons.parallelStream()
@@ -690,14 +696,27 @@ System.out.println(<span class="string">"Unique words: "</span> + uniqueWords);
 <p>Not always printed in order!</p>
 </section>
   </div>
-  <div class="slide hidden" id="slide-13">
+  <div class="slide hidden" id="slide-15">
     <section class="slide-content"><h3 id="parallel-streams-order">Parallel Streams Order</h3>
 <p>You are responsible for handling Thread safety.</p>
 <p>Beware of Side effects! Use pure functions!</p>
+<p>Don&#39;t modify the data source in the stream (persons), don&#39;t rely on state from outer scope</p>
 <pre><code class="lang-java">persons.parallelStream()
   .filter(p -&gt; p.getLastName().startsWith(<span class="string">"St"</span>))
   .sorted(comparing(Person::getLastName).thenComparing(Person::getFirstName))
   .forEachOrdered(System.out::println);</code></pre>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-16">
+    <section class="slide-content"><h3 id="stream-fusion">Stream Fusion</h3>
+<p>Streams automatically use Stream Fusion, meaning the following two operations are the same:</p>
+<pre><code class="lang-java">persons.parallelStream()
+  .filter(p -&gt; p.getLastName().startsWith(<span class="string">"St"</span>))
+  .filter(p -&gt; p.getFirstName().startsWith(<span class="string">"Fr"</span>))
+
+persons.parallelStream()
+  .filter(p -&gt; p.getLastName().startsWith(<span class="string">"St"</span>) &amp;&amp;
+          p -&gt; p.getFirstName().startsWith(<span class="string">"Fr"</span>))</code></pre>
 </section>
   </div>
 

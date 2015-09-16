@@ -216,6 +216,8 @@ System.out.println("Unique words: " + uniqueWords);
 // Unique words: [confounded, incumbent, jailer, perjury, skimming, sporadic]
 ```
 
+--
+
 ### Stream Terminal Operations
 
 * collect
@@ -226,6 +228,8 @@ System.out.println("Unique words: " + uniqueWords);
 * max
 * min
 * reduce
+
+--
 
 ### Parallel Streams
 Very easy to add, roughly 30% faster
@@ -249,9 +253,26 @@ You are responsible for handling Thread safety.
 
 Beware of Side effects! Use pure functions!
 
+Don't modify the data source in the stream (persons), don't rely on state from outer scope
+
 ```java
 persons.parallelStream()
   .filter(p -> p.getLastName().startsWith("St"))
   .sorted(comparing(Person::getLastName).thenComparing(Person::getFirstName))
   .forEachOrdered(System.out::println);
+```
+
+--
+
+### Stream Fusion
+Streams automatically use Stream Fusion, meaning the following two operations are the same:
+
+```java
+persons.parallelStream()
+  .filter(p -> p.getLastName().startsWith("St"))
+  .filter(p -> p.getFirstName().startsWith("Fr"))
+
+persons.parallelStream()
+  .filter(p -> p.getLastName().startsWith("St") &&
+          p -> p.getFirstName().startsWith("Fr"))
 ```
