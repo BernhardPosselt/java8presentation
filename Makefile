@@ -1,5 +1,5 @@
 all:
-	cleaver ./presentation.md --output ./presentation.html
+	cleaver ./presentation.md --output ./index.html
 
 watch:
-	cleaver watch ./presentation.md --output ./presentation.html
+	cleaver watch ./presentation.md --output ./index.html
