@@ -233,6 +233,26 @@ IntStream/DoubleStream/LongStream
 * average
 
 --
+### Group By
+
+```java
+List<Person> persons = Arrays.asList(
+  new Person("Doe", "John"),
+  new Person("Stronach", "Frank"),
+  new Person("Stark", "Toni"),
+  new Person("Stark", "Abigail"),
+  new Person("Stronach", "Abigail")
+);
+
+persons.stream()
+  .filter(p -> p.getFirstName().contains("i"))
+  .collect(Collectors.groupingBy(Person::getLastName))
+  .forEach((lastName, members) -> System.out.println(lastName + " " + members.size()));
+
+// Stronach 1
+// Stark 2
+
+--
 
 ### Parallel Streams
 Very easy to add, roughly 30% faster
