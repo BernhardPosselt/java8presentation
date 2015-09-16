@@ -493,8 +493,7 @@ pre .xml .cdata {
 </section>
   </div>
   <div class="slide hidden" id="slide-2">
-    <section class="slide-content"><h3 id="lambdas">Lambdas</h3>
-<p>Replace anonymous classes with one method.</p>
+    <section class="slide-content"><h3 id="sorting">Sorting</h3>
 <pre><code class="lang-java"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> {</span>
     <span class="keyword">private</span> String lastName;
     <span class="keyword">private</span> String firstName;
@@ -605,7 +604,7 @@ intList.replaceAll(value -&gt; value + constInt + <span class="keyword">this</sp
 <pre><code class="lang-java">Predicate&lt;String&gt; predicate = (s) -&gt; s.length() &gt; <span class="number">0</span>;
 predicate.test(<span class="string">"hi"</span>);  <span class="comment">// true</span>
 
-<span class="comment">// composing functions</span>
+<span class="comment">// chaining functions (composing also possible)</span>
 Function&lt;String, Integer&gt; toInt = Integer::valueOf;
 Function&lt;String, String&gt; toStr = toInt.andThen(String::valueOf);</code></pre>
 </section>
@@ -649,6 +648,7 @@ persons.stream()
 <li>flatMap</li>
 <li>limit</li>
 <li>skip</li>
+<li>mapToInt/mapToLong/mapToDouble</li>
 </ul>
 </section>
   </div>
@@ -682,6 +682,11 @@ System.out.println(<span class="string">"Unique words: "</span> + uniqueWords);
 <li>max</li>
 <li>min</li>
 <li>reduce</li>
+</ul>
+<p>IntStream/DoubleStream/LongStream</p>
+<ul>
+<li>sum</li>
+<li>average</li>
 </ul>
 </section>
   </div>

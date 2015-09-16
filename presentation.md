@@ -5,9 +5,7 @@ theme: sjaakvandenberg/cleaver-light
 
 --
 
-### Lambdas
-
-Replace anonymous classes with one method.
+### Sorting
 
 
 ```java
@@ -140,7 +138,7 @@ Interfaces can contain default methods since Java 8
 Predicate<String> predicate = (s) -> s.length() > 0;
 predicate.test("hi");  // true
 
-// composing functions
+// chaining functions (composing also possible)
 Function<String, Integer> toInt = Integer::valueOf;
 Function<String, String> toStr = toInt.andThen(String::valueOf);
 ```
@@ -193,6 +191,7 @@ persons.stream()
 * flatMap
 * limit
 * skip
+* mapToInt/mapToLong/mapToDouble
 
 --
 
@@ -228,6 +227,10 @@ System.out.println("Unique words: " + uniqueWords);
 * max
 * min
 * reduce
+
+IntStream/DoubleStream/LongStream
+* sum
+* average
 
 --
 
