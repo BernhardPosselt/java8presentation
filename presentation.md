@@ -1,128 +1,257 @@
-title: Collections & Streams & Lambdas in Java 8
+title: Streams & Lambdas in Java 8
 theme: sjaakvandenberg/cleaver-light
 --
 # Streams & Lambdas in Java 8
 
 --
-### Iterable
-* **forEach** (impure)
-* Not affected by Iterator race conditions
+
+### Lambdas
+
+Replace anonymous classes with one method.
+
 
 ```java
-Collection<String> collection = Arrays.asList("hi", "there");
-collection.forEach(item -> System.out.println(item));
-// hi
-// there
+public class Person {
+    private String lastName;
+    private String firstName;
+    /* getter, setter, constructor */
+}
 
-HashMap<K, V> map = new HashMap<>();
-map.forEach((key, value) -> /* etc */);
+List<Person> persons = Arrays.asList(
+    new Person("Doe", "John"),
+    new Person("Stronach", "Frank"),
+    new Person("Stark", "Tony"),
+    new Person("Stark", "Abigail")
+);
+
+// Doe John
+// Stark Abigail
+// Stark Tony
+// Stronach Frank
 ```
 
 --
 
-### Collection
-* **removeIf** (impure)
+### Sorting: Anonymous Class
+
+< Java 8
 
 ```java
-Collection<String> collection = Arrays.asList("test", "not");
+Collections.sort(persons, new Comparator<Person>() {
+    @Override
+    public int compare(Person person1, Person person2) {
+        int lastNameComparison = person1
+          .getLastName()
+          .compareTo(person2.getLastName());
 
-boolean elementWasRemoved = collection.removeIf(value -> value.equals("test"));
-
-collection.equals(Arrays.asList("not"));  // True
-elementWasRemoved == true; // True
+        if (lastNameComparison == 0) {
+            return person1
+              .getFirstName()
+              .compareTo(person2.getFirstName());
+        } else {
+            return lastNameComparison;
+        }
+    }
+});
 ```
 
 --
 
-### List (1 of 2)
+### Sorting: Lambdas
+IntelliJ: ALT + Enter -> replace with lambda
 
-* **replaceAll** (impure)
+Types are optional (inferred)
 
 ```java
-List<String> list = Arrays.asList("test", "not");
+persons.sort((person1, person2) -> {
+    int lastNameComparison = person1
+      .getLastName()
+      .compareTo(person2.getLastName());
+    if (lastNameComparison == 0) {
+        return person1
+          .getFirstName()
+          .compareTo(person2.getFirstName());
+    } else {
+        return lastNameComparison;
+    }
+});
+```
 
-list.replaceAll(s -> s.toUpperCase());  
-list.forEach(line -> System.out.println(line));
-// TEST
-// NOT
+--
+### Lambda Syntax
+Lambda Type signature denoted using a single **abstract** method interface
+```java
+@FunctionalInterface
+interface Identity<T> {
+    T identity(T in);
+}
 
-list.replaceAll(String::toUpperCase);  // equal to the above
-list.forEach(line -> System.out.println(line));
-// TEST
-// NOT
+public static <T> List<T> map (List<T> list, Identity<T> f) {
+    ArrayList<T> newList = new ArrayList<T>();
+    for (T item: list) {
+        newList.add(f.identity(item));
+    }
+    return newList;
+}
+
+Identity<String> lambda = in -> in;
+map(persons, lambda).forEach(System.out::println);  
+
 ```
 
 --
 
-### List (2 of 2)
-* **sort** (impure)
+### Lambda Scopes
+
+Local variables may be referenced but must be final:
 
 ```java
-List<String> list = Arrays.asList("test", "not");
+final int constInt = 3;
+List<Integer> intList = Arrays.asList(1, 2, 3);
+intList.replaceAll(value -> value + constInt);
+```
 
-list.sort((a, b) -> a.compareTo(b));
-list.forEach(line -> System.out.println(line));
-// not
-// test
+Fields and static variables can be accessed just fine:
+```java
+static int constInt = 3;
+private int constInt2 = 4;
 
-personList.sort(comparing(Person::getName));  // Comparator.comparing()
-
-// two level sorting
-personList.sort(comparing(Person::getLastName)
-                .thenComparing(Person::getFirstName));
-
+List<Integer> intList = Arrays.asList(1, 2, 3);
+intList.replaceAll(value -> value + constInt + this.constInt2);
 ```
 
 --
 
-### Map (lambda, 1 of 2)
-* **compute** (impure)
-* **computeIfPresent** (impure)
-* **computeIfAbsent** (impure)
+### Built-In Interfaces
+
+* **Predicate< T \>**: takes a T and returns a boolean
+* **Consumer< T \>**:  takes a T and returns void
+* **Supplier< T \>**:  takes nothing and returns T
+* **Function < T, R >**: takes a T and returns an R
+* **UnaryOperator < T >**: takes a T and returns a T (similar to Identity Interface)
+* [and many more](https://docs.oracle.com/javase/8/docs/api/java/util/function/package-summary.html)
+
+--
+
+### Built-In Interface default methods
+Interfaces can contain default methods since Java 8
 
 ```java
-HashMap<String, String> map = new HashMap<>();
-map.put("customer_name", "Frank");
+Predicate<String> predicate = (s) -> s.length() > 0;
+predicate.test("hi");  // true
 
-map.compute("customer_name", (key, value) -> value.toUpperCase());
+// composing functions
+Function<String, Integer> toInt = Integer::valueOf;
+Function<String, String> toStr = toInt.andThen(String::valueOf);
+```
+--
+
+### Sorting: Comparator
+Lambda enhanced Class
+
+```java
+import java.util.Comparator;
+
+persons.sort(
+  comparing(Person::getLastName)
+  .thenComparing(Person::getFirstName)
+);
+
+persons.forEach(System.out::println);
 ```
 
 --
 
-### Map (lambda, 2 of 2)
-* **merge** (impure)
-* **replaceAll** (impure)
+### Streams
 
---
-### Map (shorthand, 1 of 2)
-* **getOrDefault**: If key not present
-* **putIfAbsent**: If key null or absent
+Stream = sequence of elements on which one or more operations can be performed
+
+Pure = does not change the elements of the list but returns a new instance
+
+Either **terminal** (returns Stream) or **intermediate** (returns result)
 
 ```java
-HashMap<String, String> map = new HashMap<>();
-map.put("customer_name", "Frank");
+persons.stream()
+  .filter(p -> p.getLastName().startsWith("St"))  // intermediate
+  .forEach(System.out::println);  // terminal
 
-String address = map.getOrDefault("customer_address", "Heaven");
-address.equals("Heaven") == true;  // True
+// or
+Predicate<Person> st = p -> p.getLastName().startsWith("St");
 
-address = map.putIfAbsent("customer_address", "Hell");
-address == null;  // True
-address = map.putIfAbsent("customer_address", "Hell");
-address.equals("Hell") == true;  // True
+persons.stream()
+  .filter(st)
+  .forEach(System.out::println);
 ```
 
 --
-### Map (shorthand, 2 of 2)
-* **remove**: Remove only if mapped to given value
-* **replace**: Replace only if mapped to given value
+
+### Stream Intermediate Operations
+
+* map
+* filter
+* distinct
+* flatMap
+* limit
+* skip
+
+--
+
+### flatMap
 
 ```java
-HashMap<String, String> map = new HashMap<>();
-map.put("customer_name", "Frank");
+List<String> phrases = Arrays.asList(
+  "sporadic perjury",
+  "confounded skimming",
+  "incumbent jailer",
+  "confounded jailer"
+);
 
-boolean removed = map.remove("customer_name", "John Doe", "Herbert");
-removed == false;  // True
+List<String> uniqueWords = phrases
+  .stream()
+  .flatMap(phrase -> Stream.of(phrase.split(" +")))
+  .distinct()
+  .collect(Collectors.toList());
 
-boolean replaced = map.replace("customer_name", "John Doe", "Herbert");
-replaced == false;  // True
+System.out.println("Unique words: " + uniqueWords);
+// Unique words: [confounded, incumbent, jailer, perjury, skimming, sporadic]
+```
+
+### Stream Terminal Operations
+
+* collect
+* count
+* allMatch/anyMatch/noneMatch
+* find/findFirst/findAny
+* forEach/forEachOrdered
+* max
+* min
+* reduce
+
+### Parallel Streams
+Very easy to add, roughly 30% faster
+
+Attention: order not defined with forEach!
+
+```java
+persons.parallelStream()
+  .filter(p -> p.getLastName().startsWith("St"))
+  .sorted(comparing(Person::getLastName).thenComparing(Person::getFirstName))
+  .forEach(System.out::println);
+```
+
+Not always printed in order!
+
+--
+
+### Parallel Streams Order
+
+You are responsible for handling Thread safety.
+
+Beware of Side effects! Use pure functions!
+
+```java
+persons.parallelStream()
+  .filter(p -> p.getLastName().startsWith("St"))
+  .sorted(comparing(Person::getLastName).thenComparing(Person::getFirstName))
+  .forEachOrdered(System.out::println);
 ```
