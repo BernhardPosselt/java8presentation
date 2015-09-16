@@ -401,6 +401,19 @@ pre .chunk {
   </div>
 
   <div class="slide" id="slide-1">
+    <section class="slide-content"><h1 id="iterable">Iterable</h1>
+<p>For loop has explicit loop which is a problem for concurrent iterator access whereas forEach is not affected by it</p>
+<pre><code class="lang-java">Collection&lt;String&gt; collection = Arrays.asList(<span class="string">"hi"</span>, <span class="string">"there"</span>);
+collection.forEach(item -&gt; System.out.println(item));
+<span class="comment">// hi</span>
+<span class="comment">// there</span>
+
+HashMap&lt;K, V&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();
+map.forEach((key, value) -&gt; <span class="comment">/* etc */</span>);</code></pre>
+<p>testen</p>
+</section>
+  </div>
+  <div class="slide hidden" id="slide-2">
     <section class="slide-content"><h1 id="collection">Collection</h1>
 <pre><code class="lang-java">Collection&lt;String&gt; collection = Arrays.asList(<span class="string">"test"</span>, <span class="string">"not"</span>);
 
@@ -409,7 +422,7 @@ collection
   .equals(Arrays.asList(<span class="string">"not"</span>));  <span class="comment">// True</span></code></pre>
 </section>
   </div>
-  <div class="slide hidden" id="slide-2">
+  <div class="slide hidden" id="slide-3">
     <section class="slide-content"><h1 id="list">List</h1>
 <p>Mapping over a list (replaceAll) and sorting</p>
 <pre><code class="lang-java">Collection&lt;String&gt; collection = Arrays.asList(<span class="string">"test"</span>, <span class="string">"not"</span>);
@@ -421,7 +434,7 @@ collection
 collection.sort((a, b) -&gt; a.compareTo(b));</code></pre>
 </section>
   </div>
-  <div class="slide hidden" id="slide-3">
+  <div class="slide hidden" id="slide-4">
     <section class="slide-content"><h1 id="map">Map</h1>
 </section>
   </div>

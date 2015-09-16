@@ -1,4 +1,5 @@
-# Iterarble
+--
+# Iterable
 For loop has explicit loop which is a problem for concurrent iterator access whereas forEach is not affected by it
 
 ```java
@@ -10,7 +11,7 @@ collection.forEach(item -> System.out.println(item));
 HashMap<K, V> map = new HashMap<>();
 map.forEach((key, value) -> /* etc */);
 ```
-
+testen
 --
 
 # Collection
